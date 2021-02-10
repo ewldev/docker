@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   smart-brain-api:
@@ -7,7 +7,22 @@ services:
     build: ./
     command: npm start
     working_dir: /usr/src/smart-brain-api
+    environment:
+      POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
+    links:  
+      - postgres
     ports:
       - "3000:3000"
     volumes:
       - ./:/usr/src/smart-brain-api
+  
+  # PostgreSQL
+  postgres:
+    environment:
+      POSTGRES_USER: sally
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: smart-brain-docker
+      POSTGRES_HOST: postgres
+    image: postgres
+    ports:
+      - "5432:5432"    
